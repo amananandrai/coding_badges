@@ -3,6 +3,17 @@ from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
 
+def write_endpoint_json(path, label, message, color="0A0A0A", logo=None):
+    data = {
+        "schemaVersion": 1,
+        "label": label,
+        "message": str(message),
+        "color": color,
+        "cacheBuster": int(time.time())  # forces a tiny change every run
+    }
+    if logo:
+        data["logo"] = logo
+    path.write_text(json.dumps(data), encoding="utf-8")
 # ==== YOUR PROFILES ====
 CFG = {
     "hackerrank": {
