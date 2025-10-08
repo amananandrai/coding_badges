@@ -73,9 +73,9 @@ def fetch_hackerrank():
     h = CFG["hackerrank"]["handle"]
     api = CFG["hackerrank"]["api"].format(handle=h)
     solved = None
-
+    header = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:143.0) Gecko/20100101 Firefox/143.0'}
     try:
-        r = requests.get(api, timeout=20)
+        r = requests.get(api, timeout=20, headers=header)
         if r.ok:
             data = r.json()
             solved = (
