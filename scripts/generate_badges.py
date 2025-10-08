@@ -72,29 +72,35 @@ def fetch_hackerrank():
 
     h = CFG["hackerrank"]["handle"]
     api = CFG["hackerrank"]["api"].format(handle=h)
-    solved = None
+    message = None
     header = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:143.0) Gecko/20100101 Firefox/143.0'}
     try:
         r = requests.get(api, timeout=20, headers=header)
+        print(r.text)
         if r.ok:
             data = r.json()
-            solved = (
-                data.get("solved_challenges")
-                or data.get("total_problems_solved")
-                or data.get("model", {}).get("total_solved")
-            )
-            if not solved:
-                tracks = data.get("model", {}).get("tracks", [])
-                if tracks:
-                    solved = sum([t.get("solved_challenges_count") or 0 for t in tracks])
+            model = data.get("model", {})
+            
+            # Try to extract meaningful metrics from the API response
+            level = model.get("level")
+            event_count = model.get("event_count")
+            followers_count = model.get("followers_count")
+            
+            # Create message based on available data
+            if level is not None and event_count is not None:
+                message = f"Level {level} • {event_count} events"
+            elif level is not None:
+                message = f"Level {level}"
+            elif event_count is not None:
+                message = f"{event_count} events"
+            elif followers_count is not None:
+                message = f"{followers_count} followers"
     except Exception:
         pass
 
-    if solved is not None:
-        msg = f"Solved {solved}"
-    else:
-        msg = load_existing_message(out) or "Visit profile"
-    write_endpoint_json(out, label, msg, color, logo)
+    if not message:
+        message = load_existing_message(out) or "Visit profile"
+    write_endpoint_json(out, label, message, color, logo)
 
 # --- HackerEarth ---
 def fetch_hackerearth():
