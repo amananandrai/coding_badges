@@ -12,7 +12,7 @@ def write_endpoint_json(path, label, message, color="0A0A0A", logo=None):
         "cacheBuster": int(time.time())  # forces a tiny change every run
     }
     if logo:
-        data["logo"] = logo
+        data["namedLogo"] = logo
     path.write_text(json.dumps(data), encoding="utf-8")
 # ==== YOUR PROFILES ====
 CFG = {
