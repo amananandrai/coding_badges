@@ -12,7 +12,7 @@ def write_endpoint_json(path, label, message, color="0A0A0A", logo=None):
         "cacheBuster": int(time.time())  # forces a tiny change every run
     }
     if logo:
-        data["namedlogo"] = logo
+        data["namedLogo"] = logo
     path.write_text(json.dumps(data), encoding="utf-8")
 # ==== YOUR PROFILES ====
 CFG = {
@@ -48,7 +48,7 @@ OUT_DIR.mkdir(parents=True, exist_ok=True)
 def write_endpoint_json(path: Path, label: str, message: str, color="0A0A0A", logo=None):
     data = {"schemaVersion": 1, "label": label, "message": str(message), "color": color}
     if logo:
-        data["namedlogo"] = logo
+        data["namedLogo"] = logo
     path.write_text(json.dumps(data), encoding="utf-8")
 
 def load_existing_message(path: Path):
