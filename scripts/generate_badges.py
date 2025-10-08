@@ -130,8 +130,7 @@ def fetch_hackerearth():
 def fetch_spoj():
     out = OUT_DIR / "spoj.json"
     label, color = "SPOJ", "0A0A0A"
-    # (no official SPOJ logo in SimpleIcons; codeforces icon looks neutral)
-    logo = "codeforces"
+    logo = "spoj"
 
     url = CFG["spoj"]["profile"]
     solved, rank = None, None
