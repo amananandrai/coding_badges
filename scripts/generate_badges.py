@@ -178,7 +178,7 @@ def fetch_leetcode():
     if not message:
         message = load_existing_message(out) or "Visit profile"
     write_endpoint_json(out, label, message, color, logo)
-    print("[leetcode] status:", getattr(r, "status_code", "?"), "message:", message)
+    #print("[leetcode] status:", getattr(r, "status_code", "?"), "message:", message)
 
 
 # --- CodeChef ---
