@@ -153,7 +153,6 @@ def fetch_codechef():
     write_endpoint_json(out, label, msg, color, logo)
 
 def main():
-    fetch_hackerrank()
     fetch_hackerearth()
     fetch_spoj()
     fetch_leetcode()
