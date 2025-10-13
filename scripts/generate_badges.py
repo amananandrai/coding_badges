@@ -14,14 +14,8 @@ def write_endpoint_json(path, label, message, color="0A0A0A", logo=None):
     if logo:
         data["namedLogo"] = logo
     path.write_text(json.dumps(data), encoding="utf-8")
-# ==== YOUR PROFILES ====
+
 CFG = {
-    "hackerrank": {
-        "handle": "aman_rai",
-        "profile": "https://www.hackerrank.com/profile/aman_rai",
-        # legacy API (may or may not work; we try it first)
-        "api": "https://www.hackerrank.com/rest/contests/master/hackers/{handle}/profile",
-    },
     "hackerearth": {
         "handle": "amananandrai",
         "profile": "https://www.hackerearth.com/@amananandrai/",
@@ -33,7 +27,6 @@ CFG = {
     "leetcode": {
         "handle": "aman_rai",
         "profile": "https://leetcode.com/u/aman_rai/",
-        # community API used widely for public stats
         "api": "https://leetcode-stats-api.herokuapp.com/{handle}",
     },
     "codechef": {
@@ -44,12 +37,6 @@ CFG = {
 
 OUT_DIR = Path("badges")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
-
-def write_endpoint_json(path: Path, label: str, message: str, color="0A0A0A", logo=None):
-    data = {"schemaVersion": 1, "label": label, "message": str(message), "color": color}
-    if logo:
-        data["namedLogo"] = logo
-    path.write_text(json.dumps(data), encoding="utf-8")
 
 def load_existing_message(path: Path):
     if not path.exists():
@@ -65,43 +52,6 @@ def safe_int(x):
     except Exception:
         return None
 
-# --- HackerRank ---
-def fetch_hackerrank():
-    out = OUT_DIR / "hackerrank.json"
-    label, logo, color = "HackerRank", "hackerrank", "1ba94c"
-
-    h = CFG["hackerrank"]["handle"]
-    api = CFG["hackerrank"]["api"].format(handle=h)
-    message = None
-    header = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:143.0) Gecko/20100101 Firefox/143.0'}
-    try:
-        r = requests.get(api, timeout=20, headers=header)
-        print(r.text)
-        if r.ok:
-            data = r.json()
-            model = data.get("model", {})
-            
-            # Try to extract meaningful metrics from the API response
-            level = model.get("level")
-            event_count = model.get("event_count")
-            followers_count = model.get("followers_count")
-            
-            # Create message based on available data
-            if level is not None and event_count is not None:
-                message = f"Level {level} • {event_count} events"
-            elif level is not None:
-                message = f"Level {level}"
-            elif event_count is not None:
-                message = f"{event_count} events"
-            elif followers_count is not None:
-                message = f"{followers_count} followers"
-    except Exception:
-        pass
-
-    if not message:
-        message = load_existing_message(out) or "Visit profile"
-    write_endpoint_json(out, label, message, color, logo)
-
 # --- HackerEarth ---
 def fetch_hackerearth():
     out = OUT_DIR / "hackerearth.json"
@@ -116,10 +66,6 @@ def fetch_hackerearth():
             m = re.search(r"Problems?\s*Solved\s*:?\s*([0-9,]+)", txt, re.I)
             if m:
                 message = f"Solved {m.group(1)}"
-            else:
-                m2 = re.search(r"Followers\s*:?\s*([0-9,]+)", txt, re.I)
-                if m2:
-                    message = f"Followers {m2.group(1)}"
     except Exception:
         pass
     if not message:
@@ -168,17 +114,14 @@ def fetch_leetcode():
         if r.ok:
             j = r.json()
             total = j.get("totalSolved")
-            rating = j.get("contestRating")
-            if total and rating:
-                message = f"Solved {total} • Rating {int(rating)}"
-            elif total:
+            if total:
                 message = f"Solved {total}"
     except Exception:
         pass
     if not message:
         message = load_existing_message(out) or "Visit profile"
     write_endpoint_json(out, label, message, color, logo)
-    #print("[leetcode] status:", getattr(r, "status_code", "?"), "message:", message)
+
 
 
 # --- CodeChef ---
