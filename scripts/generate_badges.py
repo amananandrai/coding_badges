@@ -8,8 +8,8 @@ def write_endpoint_json(path, label, message, color="0A0A0A", logo=None):
         "schemaVersion": 1,
         "label": label,
         "message": str(message),
-        "color": color,
-        "cacheBuster": int(time.time())  # forces a tiny change every run
+        "color": color
+        
     }
     if logo:
         data["namedLogo"] = logo
