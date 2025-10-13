@@ -1,8 +1,3 @@
-<!-- HackerRank -->
-<a href="https://www.hackerrank.com/profile/aman_rai" target="_blank" rel="noreferrer">
-  <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/amananandrai/coding_badges/main/badges/hackerrank.json&cacheSeconds=1800" alt="HackerRank Badge" />
-</a>
-
 <!-- HackerEarth -->
 <a href="https://www.hackerearth.com/@amananandrai/" target="_blank" rel="noreferrer">
   <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/amananandrai/coding_badges/main/badges/hackerearth.json&cacheSeconds=1800" alt="HackerEarth Badge" />
